@@ -8,8 +8,8 @@ part of 'av_search_response_dto.dart';
 
 AvSearchResponseDto _$AvSearchResponseDtoFromJson(Map<String, dynamic> json) =>
     AvSearchResponseDto(
-      bestMatches: (json['bestMatches'] as List<dynamic>?)
-          ?.map((e) => AvSearchItemDto.fromJson(e as Map<String, dynamic>))
+      (json['bestMatches'] as List<dynamic>)
+          .map((e) => AvSearchItemDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

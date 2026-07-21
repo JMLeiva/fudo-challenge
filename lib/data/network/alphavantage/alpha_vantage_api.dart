@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
-import 'dto/search/av_search_item_dto.dart';
+import 'package:fudo_challenge/di/injections_keys.dart';
+import 'package:injectable/injectable.dart';
+import '../../../di/main_module.dart';
 import 'dto/search/av_search_response_dto.dart';
 
+@injectable
 class AlphaVantageApi {
 
   final String _apiKey;
@@ -13,9 +16,12 @@ class AlphaVantageApi {
   static const String paramKeyKeywords = "keywords";
   static const String paramKeyApiKey = "apikey";
 
-  AlphaVantageApi(this._apiKey, this._baseUrl);
+  AlphaVantageApi(
+      @Named(InjectionKeys.avApiKey) this._apiKey,
+      @Named(InjectionKeys.avBaseUrl) this._baseUrl
+  );
 
-  Future<AvSearchResponseDto?> search(String query) async {
+  Future<AvSearchResponseDto> search(String query) async {
     try {
       final response = await Dio().get(
         '$_baseUrl/$pathQuery',
@@ -26,7 +32,9 @@ class AlphaVantageApi {
         },
       );
 
-      if (response.data == null) return null;
+      if (response.data == null) {
+        throw Exception('Response data is null');
+      }
 
       return AvSearchResponseDto.fromJson(response.data);
     } catch (e) {
