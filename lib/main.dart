@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fudo_challenge/presentation/view/main_view.dart';
+import 'package:fudo_challenge/presentation/view/search_view.dart';
 
 import 'di/injection.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MainView(title: 'FUDO Challenge'),
+      home: const SearchView(title: 'FUDO Challenge'),
     );
   }
 }

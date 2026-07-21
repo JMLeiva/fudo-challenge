@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fudo_challenge/di/injection.dart';
-import 'package:fudo_challenge/presentation/view_model/main_view_model.dart';
+import 'package:fudo_challenge/presentation/view_model/search_view_model.dart';
 import 'package:fudo_challenge/presentation/view_model/search_view_ui_state.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({super.key, required this.title});
+class SearchView extends StatefulWidget {
+  const SearchView({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  final MainViewModel _viewModel = getIt<MainViewModel>();
+class _SearchViewState extends State<SearchView> {
+  final SearchViewModel _viewModel = getIt<SearchViewModel>();
 
   @override
   void dispose() {

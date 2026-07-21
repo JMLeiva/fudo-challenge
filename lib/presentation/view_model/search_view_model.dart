@@ -8,12 +8,12 @@ import '../../data/model/result.dart' as res;
 import 'search_view_ui_state.dart';
 
 @injectable
-class MainViewModel {
+class SearchViewModel {
   final StockRepository _repository;
   final StreamController<SearchViewUIState> _stateController = StreamController<SearchViewUIState>.broadcast();
   Timer? _debounce;
 
-  MainViewModel(this._repository) {
+  SearchViewModel(this._repository) {
     _stateController.add(SearchViewUIState.empty());
   }
 
