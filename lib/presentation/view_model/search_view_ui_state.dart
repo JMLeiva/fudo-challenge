@@ -1,4 +1,4 @@
-import 'package:fudo_challenge/data/model/stock_search_item.dart';
+import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 
 sealed class SearchViewUIState {
   const SearchViewUIState();
