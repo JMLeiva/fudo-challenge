@@ -1,12 +1,14 @@
 import 'package:fudo_challenge/data/model/stock_search_item.dart';
 import 'package:fudo_challenge/data/network/alphavantage/alpha_vantage_api.dart';
 import 'package:fudo_challenge/data/repository/stock_repository.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../model/result.dart';
 import '../../network/alphavantage/dto/search/av_search_response_dto.dart';
 
+@Injectable(as: StockRepository)
 class StockRepositoryAvApi implements StockRepository {
-  AlphaVantageApi _api;
+  final AlphaVantageApi _api;
 
   StockRepositoryAvApi(this._api);
 

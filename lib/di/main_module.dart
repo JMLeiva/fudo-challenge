@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 abstract class MainModule {
 
   @Named(InjectionKeys.avApiKey)
-  String get apiKey => String.fromEnvironment("ALPHA_VANTAGE_API_KEY");
+  String get apiKey => const String.fromEnvironment("ALPHA_VANTAGE_API_KEY");
 
   @Named(InjectionKeys.avBaseUrl)
   String get baseUrl => 'https://alphavantage.co';

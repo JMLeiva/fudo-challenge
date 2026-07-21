@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fudo_challenge/presentation/main_view.dart';
+import 'package:fudo_challenge/presentation/view/main_view.dart';
 
 import 'di/injection.dart';
 
