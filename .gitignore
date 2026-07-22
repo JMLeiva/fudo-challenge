@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # Secrets
-secrets.json
+private_secrets.json
