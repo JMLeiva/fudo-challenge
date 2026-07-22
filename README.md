@@ -58,3 +58,10 @@ To include the API keys during the build process, run the application using the 
 ```bash
 flutter run --dart-define-from-file=secrets.json
 ```
+
+## TODO
+- **API Client Abstraction**: Wrap `Dio` in a dedicated network client class to improve testability and decoupling of the data layer.
+- **Domain Use Cases**: Introduce a `UseCase` layer to encapsulate specific business logic and further decouple the Domain from the Presentation layer.
+- **Advanced Visualizations**: Implement a **Candlestick chart** view in the stock details screen for more detailed technical analysis.
+- **Enhanced UX**: Add **Pull-to-refresh** functionality in the details screen to allow manual updates of stock quotes and intraday data.
+- **Resilience & Rate Limiting**: Implement a robust **Throttling and Retrying logic** using strategies like **Exponential Backoff** to gracefully handle API rate limit errors instead of immediate failure.
