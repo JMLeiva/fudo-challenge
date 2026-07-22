@@ -18,6 +18,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchEmptyPrompt => 'Try searching something';
 
   @override
+  String get emptyResults => 'No results found';
+
+  @override
   String get detailsOpen => 'Open';
 
   @override

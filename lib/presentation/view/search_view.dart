@@ -96,6 +96,14 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _successContent(Success state) {
+    if(state.items.isEmpty) {
+      return Center(child: Text(AppLocalizations.of(context)!.emptyResults));
+    } else {
+      return _successNonEmptyContent(state);
+    }
+  }
+
+  Widget _successNonEmptyContent(Success state) {
     return ListView.builder(
       itemCount: state.items.length,
       itemBuilder: (context, index) {
