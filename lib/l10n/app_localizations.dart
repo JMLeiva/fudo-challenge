@@ -112,6 +112,12 @@ abstract class AppLocalizations {
   /// **'Try searching something'**
   String get searchEmptyPrompt;
 
+  /// No description provided for @emptyResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get emptyResults;
+
   /// No description provided for @detailsOpen.
   ///
   /// In en, this message translates to:

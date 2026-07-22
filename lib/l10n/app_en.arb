@@ -2,6 +2,7 @@
     "appTitle": "FUDO Challenge",
     "searchHint": "Search stocks...",
     "searchEmptyPrompt": "Try searching something",
+    "emptyResults" : "No results found",
     "detailsOpen": "Open",
     "detailsHigh": "High",
     "detailsLow": "Low",

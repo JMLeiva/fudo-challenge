@@ -1,28 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fudo_challenge/data/model/result.dart';
+import 'package:fudo_challenge/domain/model/stock.dart';
 import 'package:fudo_challenge/domain/model/stock_search_item.dart';
-import 'package:fudo_challenge/data/network/alphavantage/alpha_vantage_api.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_item_dto.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_response_dto.dart';
+import 'package:fudo_challenge/data/network/alphavantage/dto/quote/av_stock_quote_dto.dart';
+import 'package:fudo_challenge/data/network/alphavantage/dto/overview/av_overview_dto.dart';
+import 'package:fudo_challenge/data/network/alphavantage/dto/intraday/av_intraday_response_dto.dart';
 import 'package:fudo_challenge/data/repository/implementation/stock_repository_av_api.dart';
-
-class MockAlphaVantageApi extends AlphaVantageApi {
-  MockAlphaVantageApi() : super('', '');
-
-  AvSearchResponseDto? response;
-  Object? error;
-
-  @override
-  Future<AvSearchResponseDto> search(String query) async {
-    if (error != null) {
-      throw error!;
-    }
-    if (response == null) {
-      throw Exception('Mock response not set');
-    }
-    return response!;
-  }
-}
+import '../../../mocks/mock_alpha_vantage_api.dart';
 
 void main() {
   late StockRepositoryAvApi repository;
@@ -58,7 +44,7 @@ void main() {
           region: 'United States',
         ),
       ]);
-      mockApi.response = mockResponse;
+      mockApi.searchResponse = mockResponse;
 
       // Act
       final result = await repository.search('Apple');
@@ -86,6 +72,86 @@ void main() {
       expect(result, isA<Failure<List<StockSearchItem>, String>>());
       final failureResult = result as Failure<List<StockSearchItem>, String>;
       expect(failureResult.value, contains('Network error'));
+    });
+  });
+
+  group('StockRepositoryAvApi getStockDetails', () {
+    test('should return Stock when all API calls are successful', () async {
+      // Arrange
+      final mockQuote = AvStockQuoteDto(
+        symbol: 'AAPL',
+        open: 150.0,
+        high: 155.0,
+        low: 149.0,
+        price: 153.0,
+        volume: 1000000,
+        latestTradingDay: '2023-10-27',
+        previousClose: 152.0,
+        change: 1.0,
+        changePercent: 0.65,
+      );
+      final mockOverview = AvOverviewDto(
+        symbol: 'AAPL',
+        name: 'Apple Inc.',
+        description: 'Tech company',
+        exchange: 'NASDAQ',
+        currency: 'USD',
+        country: 'USA',
+        sector: 'Technology',
+        industry: 'Consumer Electronics',
+        marketCapitalization: 2000000000000,
+        peRatio: 30.0,
+        dividendYield: 0.01,
+        eps: 5.0,
+        fiftyTwoWeekHigh: 180.0,
+        fiftyTwoWeekLow: 120.0,
+      );
+      final mockIntraday = AvIntradayResponseDto(
+        metadata: AvIntradayMetadataDto(
+          symbol: 'AAPL',
+          lastRefreshed: '2023-10-27 16:00:00',
+          interval: '5min',
+          timeZone: 'US/Eastern',
+        ),
+        timeSeries: [
+          AvIntradayPointDto(
+            timestamp: '2023-10-27 15:55:00',
+            open: 152.5,
+            high: 152.6,
+            low: 152.4,
+            close: 152.55,
+            volume: 50000,
+          ),
+        ],
+      );
+
+      mockApi.quoteResponse = mockQuote;
+      mockApi.overviewResponse = mockOverview;
+      mockApi.intradayResponse = mockIntraday;
+
+      // Act
+      final result = await repository.getStockDetails('AAPL');
+
+      // Assert
+      expect(result, isA<Success<Stock, String>>());
+      final successResult = result as Success<Stock, String>;
+      expect(successResult.value.quote.symbol, 'AAPL');
+      expect(successResult.value.overview.name, 'Apple Inc.');
+      expect(successResult.value.intraday.length, 1);
+      expect(successResult.value.intraday[0].close, 152.55);
+    });
+
+    test('should return failure when any API call fails', () async {
+      // Arrange
+      mockApi.error = Exception('API Error');
+
+      // Act
+      final result = await repository.getStockDetails('AAPL');
+
+      // Assert
+      expect(result, isA<Failure<Stock, String>>());
+      final failureResult = result as Failure<Stock, String>;
+      expect(failureResult.value, contains('API Error'));
     });
   });
 }
