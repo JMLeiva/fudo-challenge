@@ -12,7 +12,7 @@ import '../../network/alphavantage/dto/overview/av_overview_dto.dart';
 import '../../network/alphavantage/dto/quote/av_stock_quote_dto.dart';
 import '../../network/alphavantage/dto/search/av_search_response_dto.dart';
 
-@Injectable(as: StockRepository)
+@injectable
 class StockRepositoryAvApi extends StockRepository {
   final AlphaVantageApi _api;
 

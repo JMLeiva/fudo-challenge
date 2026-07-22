@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import '../data/network/alphavantage/alpha_vantage_api.dart' as _i431;
 import '../data/repository/implementation/stock_repository_av_api.dart'
     as _i449;
+import '../data/repository/implementation/stock_repository_memory_cache.dart'
+    as _i290;
 import '../data/repository/stock_repository.dart' as _i626;
 import '../presentation/view_model/details_view_model.dart' as _i319;
 import '../presentation/view_model/search_view_model.dart' as _i757;
@@ -42,8 +44,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<String>(instanceName: 'alphaVantageBaseUrl'),
       ),
     );
-    gh.factory<_i626.StockRepository>(
+    gh.factory<_i449.StockRepositoryAvApi>(
       () => _i449.StockRepositoryAvApi(gh<_i431.AlphaVantageApi>()),
+    );
+    gh.factory<_i626.StockRepository>(
+      () => _i290.StockRepositoryMemoryCache(gh<_i449.StockRepositoryAvApi>()),
     );
     gh.factory<_i319.DetailsViewModel>(
       () => _i319.DetailsViewModel(gh<_i626.StockRepository>()),
