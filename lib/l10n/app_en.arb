@@ -1,0 +1,16 @@
+{
+    "appTitle": "FUDO Challenge",
+    "searchHint": "Search stocks...",
+    "searchEmptyPrompt": "Try searching something",
+    "detailsOpen": "Open",
+    "detailsHigh": "High",
+    "detailsLow": "Low",
+    "detailsAbout": "About",
+    "detailsSector": "Sector",
+    "detailsIndustry": "Industry",
+    "detailsMarketCap": "Market Cap",
+    "detailsPeRatio": "PE Ratio",
+    "detailsDividendYield": "Dividend Yield",
+    "detailsEps": "EPS",
+    "retry": "Retry"
+}

@@ -7,11 +7,10 @@ import 'package:fudo_challenge/presentation/view_model/search_view_model.dart';
 import 'package:fudo_challenge/presentation/view_model/search_view_ui_state.dart';
 
 import '../../domain/model/stock_search_item.dart';
+import '../../l10n/app_localizations.dart';
 
 class SearchView extends StatefulWidget {
-  const SearchView({super.key, required this.title});
-
-  final String title;
+  const SearchView({super.key});
 
   @override
   State<SearchView> createState() => _SearchViewState();
@@ -46,7 +45,7 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(AppLocalizations.of(context)!.appTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,10 +78,10 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _createSearchBar() {
     return TextField(
-      decoration: const InputDecoration(
-        hintText: 'Search stocks...',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        hintText: AppLocalizations.of(context)!.searchHint,
+        prefixIcon: const Icon(Icons.search),
+        border: const OutlineInputBorder(),
       ),
       onChanged: _viewModel.onSearchChanged,
     );
@@ -93,7 +92,7 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _emptyContent() {
-    return const Center(child: Text('Try searching something'));
+    return Center(child: Text(AppLocalizations.of(context)!.searchEmptyPrompt));
   }
 
   Widget _successContent(Success state) {

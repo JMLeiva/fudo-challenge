@@ -4,6 +4,7 @@ import 'package:fudo_challenge/presentation/view_model/details_view_model.dart';
 import 'package:fudo_challenge/presentation/view_model/details_view_ui_state.dart';
 import '../../domain/model/stock.dart';
 import '../../domain/model/stock_search_item.dart';
+import '../../l10n/app_localizations.dart';
 
 class DetailsView extends StatefulWidget {
   const DetailsView({super.key, required this.stock});
@@ -39,13 +40,17 @@ class _DetailsViewState extends State<DetailsView> {
           final state = snapshot.data;
 
           return switch (state) {
-            null || Loading() => const Center(child: CircularProgressIndicator()),
+            null || Loading() => _loadingContent(),
             Success() => _successContent(state.stock),
             Error() => _errorContent(state.message),
           };
         },
       ),
     );
+  }
+
+  Widget _loadingContent() {
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget _successContent(Stock stock) {
@@ -118,9 +123,9 @@ class _DetailsViewState extends State<DetailsView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _dataItem("Open", "\$${quote.open.toStringAsFixed(2)}"),
-            _dataItem("High", "\$${quote.high.toStringAsFixed(2)}"),
-            _dataItem("Low", "\$${quote.low.toStringAsFixed(2)}"),
+            _dataItem(AppLocalizations.of(context)!.detailsOpen, "\$${quote.open.toStringAsFixed(2)}"),
+            _dataItem(AppLocalizations.of(context)!.detailsHigh, "\$${quote.high.toStringAsFixed(2)}"),
+            _dataItem(AppLocalizations.of(context)!.detailsLow, "\$${quote.low.toStringAsFixed(2)}"),
           ],
         ),
       ],
@@ -129,10 +134,11 @@ class _DetailsViewState extends State<DetailsView> {
 
   Widget _overviewSection(Stock stock) {
     final overview = stock.overview;
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("About", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        Text(l10n.detailsAbout, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Text(overview.description),
         const SizedBox(height: 16),
@@ -140,12 +146,12 @@ class _DetailsViewState extends State<DetailsView> {
           spacing: 24,
           runSpacing: 16,
           children: [
-            _dataItem("Sector", overview.sector),
-            _dataItem("Industry", overview.industry),
-            _dataItem("Market Cap", _formatLargeNumber(overview.marketCapitalization)),
-            _dataItem("PE Ratio", overview.peRatio.toString()),
-            _dataItem("Dividend Yield", "${(overview.dividendYield * 100).toStringAsFixed(2)}%"),
-            _dataItem("EPS", overview.eps.toString()),
+            _dataItem(l10n.detailsSector, overview.sector),
+            _dataItem(l10n.detailsIndustry, overview.industry),
+            _dataItem(l10n.detailsMarketCap, _formatLargeNumber(overview.marketCapitalization)),
+            _dataItem(l10n.detailsPeRatio, overview.peRatio.toString()),
+            _dataItem(l10n.detailsDividendYield, "${(overview.dividendYield * 100).toStringAsFixed(2)}%"),
+            _dataItem(l10n.detailsEps, overview.eps.toString()),
           ],
         ),
       ],
@@ -180,7 +186,7 @@ class _DetailsViewState extends State<DetailsView> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => _viewModel.loadStockDetails(widget.stock.stockSymbol),
-            child: const Text("Retry"),
+            child: Text(AppLocalizations.of(context)!.retry),
           )
         ],
       ),
