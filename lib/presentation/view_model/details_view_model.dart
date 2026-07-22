@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import '../../data/repository/stock_repository.dart';
-import '../../data/model/result.dart' as res;
-import '../../domain/model/stock.dart';
 import 'details_view_ui_state.dart';
 
 @injectable
@@ -20,11 +18,10 @@ class DetailsViewModel {
 
     final result = await _repository.getStockDetails(symbol);
 
-    if (result is res.Success<Stock, String>) {
-      _stateController.add(DetailsViewUIState.success(result.value));
-    } else if (result is res.Failure<Stock, String>) {
-      _stateController.add(DetailsViewUIState.error(result.value));
-    }
+    result.fold(
+        ifLeft: (error) => _stateController.add(DetailsViewUIState.error(error)),
+        ifRight: (stock) => _stateController.add(DetailsViewUIState.success(stock))
+    );
   }
 
   void dispose() {

@@ -1,6 +1,6 @@
+import 'package:dart_either/dart_either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:fudo_challenge/data/model/result.dart' as res;
 import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 import 'package:fudo_challenge/presentation/view_model/search_view_model.dart';
 import 'package:fudo_challenge/presentation/view_model/search_view_ui_state.dart' as ui;
@@ -28,7 +28,7 @@ void main() {
     test('onSearchChanged emits loading then success after debounce when query is valid', () {
       fakeAsync((async) {
         // Arrange
-        mockRepository.searchResult = res.Result.success(mockSearchItems);
+        mockRepository.searchResult = mockSearchItems.right();
 
         // Act & Assert
         expectLater(
@@ -62,7 +62,7 @@ void main() {
     test('onSearchChanged emits error after debounce when repository call fails', () {
       fakeAsync((async) {
         // Arrange
-        mockRepository.searchResult = res.Result.failure('API error');
+        mockRepository.searchResult = 'API error'.left();
 
         // Act & Assert
         expectLater(

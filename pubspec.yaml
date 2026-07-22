@@ -20,6 +20,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   injectable: ^2.5.0
   get_it: ^8.0.3
+  dart_either: ^2.1.0
 
 dev_dependencies:
   flutter_test:
