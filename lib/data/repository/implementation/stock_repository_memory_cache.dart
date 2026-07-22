@@ -4,16 +4,15 @@ import 'package:fudo_challenge/domain/model/stock_intraday_point.dart';
 import 'package:fudo_challenge/domain/model/stock_overview.dart';
 import 'package:fudo_challenge/domain/model/stock_quote.dart';
 import 'package:fudo_challenge/domain/model/stock_search_item.dart';
+import 'package:fudo_challenge/di/injections_keys.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_cache/memory_cache.dart';
 
-import 'stock_repository_av_api.dart';
-
 @Injectable(as: StockRepository)
 class StockRepositoryMemoryCache extends StockRepository {
-  final StockRepositoryAvApi _fallback;
+  final StockRepository _fallback;
 
-  StockRepositoryMemoryCache(this._fallback);
+  StockRepositoryMemoryCache(@Named(InjectionKeys.remoteRepository) this._fallback);
 
   @override
   Future<Either<String, List<StockIntradayPoint>>> getIntradayData(String symbol) async {
