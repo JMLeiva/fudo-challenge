@@ -1,7 +1,5 @@
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fudo_challenge/data/model/result.dart';
-import 'package:fudo_challenge/domain/model/stock.dart';
-import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_item_dto.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_response_dto.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/quote/av_stock_quote_dto.dart';
@@ -25,9 +23,11 @@ void main() {
       final result = await repository.search('');
 
       // Assert
-      expect(result, isA<Success<List<StockSearchItem>, String>>());
-      final successResult = result as Success<List<StockSearchItem>, String>;
-      expect(successResult.value, isEmpty);
+      expect(result.isRight, isTrue);
+      result.fold(
+        ifLeft: (l) => fail('Should be right'),
+        ifRight: (r) => expect(r, isEmpty),
+      );
     });
 
     test('should return list of StockSearchItem when API call is successful', () async {
@@ -50,15 +50,19 @@ void main() {
       final result = await repository.search('Apple');
 
       // Assert
-      expect(result, isA<Success<List<StockSearchItem>, String>>());
-      final successResult = result as Success<List<StockSearchItem>, String>;
-      expect(successResult.value.length, 2);
-      expect(successResult.value[0].stockSymbol, 'AAPL');
-      expect(successResult.value[0].companyName, 'Apple Inc.');
-      expect(successResult.value[0].region, 'United States');
-      expect(successResult.value[1].stockSymbol, 'MSFT');
-      expect(successResult.value[1].companyName, 'Microsoft Corporation');
-      expect(successResult.value[1].region, 'United States');
+      expect(result.isRight, isTrue);
+      result.fold(
+        ifLeft: (l) => fail('Should be right'),
+        ifRight: (r) => {
+          expect(r.length, 2),
+          expect(r[0].stockSymbol, 'AAPL'),
+          expect(r[0].companyName, 'Apple Inc.'),
+          expect(r[0].region, 'United States'),
+          expect(r[1].stockSymbol, 'MSFT'),
+          expect(r[1].companyName, 'Microsoft Corporation'),
+          expect(r[1].region, 'United States'),
+        },
+      );
     });
 
     test('should return failure when API call throws an exception', () async {
@@ -69,9 +73,11 @@ void main() {
       final result = await repository.search('Apple');
 
       // Assert
-      expect(result, isA<Failure<List<StockSearchItem>, String>>());
-      final failureResult = result as Failure<List<StockSearchItem>, String>;
-      expect(failureResult.value, contains('Network error'));
+      expect(result.isLeft, isTrue);
+      result.fold(
+        ifLeft: (l) => expect(l, contains('Network error')),
+        ifRight: (r) => fail('Should be left'),
+      );
     });
   });
 
@@ -133,12 +139,16 @@ void main() {
       final result = await repository.getStockDetails('AAPL');
 
       // Assert
-      expect(result, isA<Success<Stock, String>>());
-      final successResult = result as Success<Stock, String>;
-      expect(successResult.value.quote.symbol, 'AAPL');
-      expect(successResult.value.overview.name, 'Apple Inc.');
-      expect(successResult.value.intraday.length, 1);
-      expect(successResult.value.intraday[0].close, 152.55);
+      expect(result.isRight, isTrue);
+      result.fold(
+        ifLeft: (l) => fail('Should be right'),
+        ifRight: (r) => {
+          expect(r.quote.symbol, 'AAPL'),
+          expect(r.overview.name, 'Apple Inc.'),
+          expect(r.intraday.length, 1),
+          expect(r.intraday[0].close, 152.55),
+        },
+      );
     });
 
     test('should return failure when any API call fails', () async {
@@ -149,9 +159,11 @@ void main() {
       final result = await repository.getStockDetails('AAPL');
 
       // Assert
-      expect(result, isA<Failure<Stock, String>>());
-      final failureResult = result as Failure<Stock, String>;
-      expect(failureResult.value, contains('API Error'));
+      expect(result.isLeft, isTrue);
+      result.fold(
+        ifLeft: (l) => expect(l, contains('API Error')),
+        ifRight: (r) => fail('Should be left'),
+      );
     });
   });
 }

@@ -1,5 +1,5 @@
+import 'package:dart_either/dart_either.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fudo_challenge/data/model/result.dart' as res;
 import 'package:fudo_challenge/domain/model/stock.dart';
 import 'package:fudo_challenge/domain/model/stock_intraday_point.dart';
 import 'package:fudo_challenge/domain/model/stock_overview.dart';
@@ -65,7 +65,7 @@ void main() {
 
     test('loadStockDetails emits loading then success when repository call is successful', () async {
       // Arrange
-      mockRepository.stockDetailsResult = res.Result.success(mockStock);
+      mockRepository.stockDetailsResult = mockStock.right();
 
       // Act & Assert
       expect(
@@ -81,7 +81,7 @@ void main() {
 
     test('loadStockDetails emits loading then error when repository call fails', () async {
       // Arrange
-      mockRepository.stockDetailsResult = res.Result.failure('API error');
+      mockRepository.stockDetailsResult = 'API error'.left();
 
       // Act & Assert
       expect(

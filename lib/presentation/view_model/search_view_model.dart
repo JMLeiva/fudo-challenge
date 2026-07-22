@@ -4,7 +4,6 @@ import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 import 'package:fudo_challenge/data/repository/stock_repository.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../data/model/result.dart' as res;
 import 'search_view_ui_state.dart';
 
 @injectable
@@ -38,11 +37,10 @@ class SearchViewModel {
 
     final result = await _repository.search(query);
 
-    if (result is res.Success<List<StockSearchItem>, String>) {
-      _stateController.add(SearchViewUIState.success(result.value));
-    } else if (result is res.Failure<List<StockSearchItem>, String>) {
-      _stateController.add(SearchViewUIState.error(result.value));
-    }
+    result.fold(
+      ifLeft: (error) => _stateController.add(SearchViewUIState.error(error)),
+      ifRight: (items) => _stateController.add(SearchViewUIState.success(items)),
+    );
   }
 
   void onStockItemTap(StockSearchItem item) {
