@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fudo_challenge/presentation/view/search_view.dart';
 
 import 'di/injection.dart';
+import 'l10n/app_localizations.dart';
 
 
 void main() {
@@ -17,11 +18,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SearchView(title: 'FUDO Challenge'),
+      home: const SearchView(),
     );
   }
 }

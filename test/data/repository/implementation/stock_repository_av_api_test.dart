@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fudo_challenge/data/model/result.dart';
-import 'package:fudo_challenge/data/model/stock_search_item.dart';
+import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 import 'package:fudo_challenge/data/network/alphavantage/alpha_vantage_api.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_item_dto.dart';
 import 'package:fudo_challenge/data/network/alphavantage/dto/search/av_search_response_dto.dart';

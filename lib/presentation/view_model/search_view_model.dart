@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fudo_challenge/data/model/stock_search_item.dart';
+import 'package:fudo_challenge/domain/model/stock_search_item.dart';
 import 'package:fudo_challenge/data/repository/stock_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,6 +11,7 @@ import 'search_view_ui_state.dart';
 class SearchViewModel {
   final StockRepository _repository;
   final StreamController<SearchViewUIState> _stateController = StreamController<SearchViewUIState>.broadcast();
+  final StreamController<StockSearchItem> _navigationController = StreamController<StockSearchItem>.broadcast();
   Timer? _debounce;
 
   SearchViewModel(this._repository) {
@@ -18,6 +19,7 @@ class SearchViewModel {
   }
 
   Stream<SearchViewUIState> get stateStream => _stateController.stream;
+  Stream<StockSearchItem> get navigationStream => _navigationController.stream;
 
   void onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -43,8 +45,13 @@ class SearchViewModel {
     }
   }
 
+  void onStockItemTap(StockSearchItem item) {
+    _navigationController.add(item);
+  }
+
   void dispose() {
     _debounce?.cancel();
     _stateController.close();
+    _navigationController.close();
   }
 }
